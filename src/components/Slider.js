@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Box, Button, Heading } from "@chakra-ui/react";
+import { Box, Button, Heading, VStack } from "@chakra-ui/react";
 // Import Swiper React components
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import { FaArrowRightLong } from "react-icons/fa6";
@@ -10,11 +10,23 @@ import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
+import "swiper/css/effect-fade";
+import "swiper/css/effect-flip";
+import "swiper/css/effect-creative";
+import "swiper/css/effect-cube";
 
 // import "./styles.css";
 
 // import required modules
-import { Navigation, Thumbs } from "swiper/modules";
+import {
+  Autoplay,
+  EffectCreative,
+  EffectCube,
+  EffectFade,
+  EffectFlip,
+  Navigation,
+  Thumbs,
+} from "swiper/modules";
 
 export default function Slider() {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
@@ -65,10 +77,18 @@ export default function Slider() {
           "--swiper-pagination-color": "#fff",
         }}
         loop={true}
+        allowTouchMove={false}
         spaceBetween={10}
+        effect="fade"
         // navigation={true}
-
-        modules={[Navigation, Thumbs]}
+        modules={[
+          Navigation,
+          Thumbs,
+          EffectFade,
+          EffectCreative,
+          EffectFlip,
+          EffectCube,
+        ]}
         className="mySwiper2"
         onSwiper={setThumbsSwiper}
       >
@@ -80,7 +100,7 @@ export default function Slider() {
                 bgSize={"cover"}
                 backgroundImage={item.image}
                 position={"relative"}
-                p={8}
+                p={12}
                 // className={`h-screen  bg-cover relative p-12`}
               >
                 <div className="overlay-2"></div>
@@ -137,13 +157,21 @@ export default function Slider() {
             nextEl: ".btn-next",
             prevEl: ".btn-prev",
           }}
-          //   watchSlidesProgress={true}
-          modules={[Navigation, Thumbs]}
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false,
+            // pauseOnMouseEnter: true,
+          }}
+          speed={1000}
+          watchSlidesProgress={true}
+          modules={[Navigation, Thumbs, Autoplay]}
           className="mySwiper"
         >
           {slidesData.map((item) => (
             <SwiperSlide key={item.id}>
-              <div
+              <Box
+                cursor={"pointer"}
+                bgImage={item.image}
                 style={{
                   width: "100%",
                   height: "100%",
@@ -153,27 +181,62 @@ export default function Slider() {
                 className="slideThubsBg"
               >
                 <div className="overlay"></div>
-                <div className="z-10 relative p-4 flex justify-end h-full flex-col">
-                  <h2 className="text-2xl h-auto text-white font-bold pb-5">
+                <VStack
+                  justifyContent={"end"}
+                  h={"full"}
+                  p={6}
+                  zIndex={2}
+                  position={"relative"}
+                  alignItems={"start"}
+                >
+                  <Heading fontSize={"2xl"} fontWeight={500}>
                     {item.Title}
-                  </h2>
-                </div>
-              </div>
+                  </Heading>
+                </VStack>
+              </Box>
             </SwiperSlide>
           ))}
         </Swiper>
         <div className="relative w-full"></div>
-        <div className="navigation-swiper absolute bottom-40  right-[49%] z-10 flex gap-5">
-          <button className="btn-prev bg-white h-10 w-10 rounded-full flex justify-center items-center">
+        <Box
+          position={"absolute"}
+          zIndex={2}
+          display={"flex"}
+          gap={5}
+          bottom={24}
+          right={"45%"}
+          className="navigation-swiper absolute bottom-40  right-[49%] z-10 flex gap-5"
+        >
+          <Box
+            h={12}
+            w={12}
+            bg={"white"}
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            borderRadius={"full"}
+            cursor={"pointer"}
+            className="btn-prev "
+          >
             {/* <FaChevronLeft /> */}
-            <BsChevronLeft className="text-xl" />
+            <BsChevronLeft className="text-xl" color="black" />
             {/* <IoChevronBackCircleSharp className="text-3xl" /> */}
-          </button>
-          <button className="btn-next  bg-white h-10 w-10 rounded-full flex justify-center items-center">
+          </Box>
+          <Box
+            h={12}
+            w={12}
+            bg={"white"}
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            borderRadius={"full"}
+            cursor={"pointer"}
+            className="btn-next"
+          >
             {/* <FaChevronRight /> */}
-            <BsChevronRight className="text-xl" />
-          </button>
-        </div>
+            <BsChevronRight className="text-xl" color="black" />
+          </Box>
+        </Box>
       </div>
     </>
   );
